@@ -1,0 +1,5 @@
+.*.swp
+.*.swc
+*~
+*.bak
+.ipynb_checkpoints
