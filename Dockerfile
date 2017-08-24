@@ -1,9 +1,7 @@
 
-FROM jupyter/datascience-notebook
+FROM jupyter/datascience-notebook:37af02395694
 
 USER root
-
-# Reference: http://www.pyimagesearch.com/2016/10/24/ubuntu-16-04-how-to-install-opencv/
 
 RUN \ 
      apt-get -qq update && apt-get -qq upgrade -y \
@@ -36,20 +34,17 @@ RUN \
 
 RUN \
      cd /home/jovyan \
-  && wget https://github.com/Itseez/opencv/archive/3.2.0.zip \
-  && unzip 3.2.0.zip \
-  && mv /home/jovyan/opencv-3.2.0/ /home/jovyan/opencv/ \
-  && rm -rf /home/jovyan/3.2.0.zip \
+  && curl https://codeload.github.com/opencv/opencv/tar.gz/3.3.0 | tar xz \
+  && mv /home/jovyan/opencv-3.3.0/ /home/jovyan/opencv/ \
 
   && cd /home/jovyan \
-  && wget https://github.com/opencv/opencv_contrib/archive/3.2.0.zip -O 3.2.0-contrib.zip \
-  && unzip 3.2.0-contrib.zip \
-  && mv opencv_contrib-3.2.0 opencv_contrib \
-  && rm -rf /home/jovyan/3.2.0-contrib.zip \
+  && curl https://codeload.github.com/opencv/opencv_contrib/tar.gz/3.3.0 | tar xz \
+  && mv opencv_contrib-3.3.0 opencv_contrib \
 
      # HACK add conda lib to library search locations
   && export LD_LIBRARY_PATH=/opt/conda/lib \
 
+     # make the makefiles
   && cd /home/jovyan/opencv \
   && mkdir build \
   && cd build \
@@ -63,12 +58,13 @@ RUN \
            -D OPENCV_EXTRA_MODULES_PATH=/home/jovyan/opencv_contrib/modules \
            -D BUILD_EXAMPLES=ON .. \
 
+     # build the libraries
   && cd /home/jovyan/opencv/build \
-  && make -j $(nproc) \
+  && make -j `expr 2 \* $(nproc)` -l $(nproc) \
   && make install \
   && ldconfig \
 
-     # clean opencv repos
+     # clean opencv build artifacts and documentation
   && rm -rf /home/jovyan/opencv/build \
   && rm -rf /home/jovyan/opencv/3rdparty \
   && rm -rf /home/jovyan/opencv/doc \
@@ -83,7 +79,16 @@ RUN ln -s \
      /usr/local/lib/python3.6/site-packages/cv2.cpython-36m-x86_64-linux-gnu.so \
      /opt/conda/lib/python3.6/site-packages/
 
-RUN chown -R jovyan.users /home/jovyan/opencv
+RUN chown -R jovyan.users /home/jovyan/opencv /home/jovyan/opencv_contrib
+
+COPY simple-opencv-window.ipynb /home/jovyan/notebooks/
+
+RUN \
+     chown -R jovyan.users /home/jovyan/notebooks \
+  && chmod -R 0775 /home/jovyan/notebooks
 
 USER jovyan
+
+RUN \
+    jupyter trust /home/jovyan/notebooks/simple-opencv-window.ipynb
 
