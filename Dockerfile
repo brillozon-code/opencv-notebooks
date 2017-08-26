@@ -81,7 +81,9 @@ RUN ln -s \
 
 RUN chown -R jovyan.users /home/jovyan/opencv /home/jovyan/opencv_contrib
 
-COPY simple-opencv-window.ipynb /home/jovyan/notebooks/
+COPY simple-opencv-window.ipynb \
+     image-colors-display.ipynb \
+     channel-mixing-technicolor.ipynb /home/jovyan/notebooks/
 
 RUN \
      chown -R jovyan.users /home/jovyan/notebooks \
@@ -90,5 +92,7 @@ RUN \
 USER jovyan
 
 RUN \
-    jupyter trust /home/jovyan/notebooks/simple-opencv-window.ipynb
+    jupyter trust /home/jovyan/notebooks/simple-opencv-window.ipynb \
+ && jupyter trust /home/jovyan/notebooks/image-colors-display.ipynb \
+ && jupyter trust /home/jovyan/notebooks/channel-mixing-technicolor.ipynb
 

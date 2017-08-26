@@ -37,7 +37,7 @@ Forward the Unix X11 socket and pass the DISPLAY environment variable to
 the container: `-v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY`.
 
 ```bash
-docker run -it --rm -p 8888:8888 -v /tmp/.X11-unix:/tmp/.X11-unix -v $(pwd):/home/jovyan/local -e DISPLAY opencv-notebook
+docker run -it --rm -p 8888:8888 -v /tmp/.X11-unix:/tmp/.X11-unix -v $(pwd):/home/jovyan/local -e DISPLAY opencv-notebooks
 ```
 
 #### With access to host devices and X server
