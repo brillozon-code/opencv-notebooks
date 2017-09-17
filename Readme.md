@@ -9,6 +9,9 @@ The container image is based on the
 image from 8/16/2017.  This image is based on the Ubuntu 16.04 (xenial)
 distribution.
 
+In addition, the [Theano](http://deeplearning.net/software/theano/)
+and [Tensorflow](https://www.tensorflow.org/) Deep Learning libraries have been installed.
+
 The OpenCV libraries are built from the [version 3.3.0 source
 code](https://github.com/opencv/opencv) and [contributed
 libraries](https://github.com/opencv/opencv_contrib).  The build
@@ -37,7 +40,7 @@ Forward the Unix X11 socket and pass the DISPLAY environment variable to
 the container: `-v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY`.
 
 ```bash
-docker run -it --rm -p 8888:8888 -v /tmp/.X11-unix:/tmp/.X11-unix -v $(pwd):/home/jovyan/local -e DISPLAY opencv-notebooks
+docker run -it --rm -p 8888:8888 -v /tmp/.X11-unix:/tmp/.X11-unix -v $(pwd):/home/jovyan/local -e DISPLAY brillozon/opencv-notebooks
 ```
 
 #### With access to host devices and X server
@@ -46,7 +49,7 @@ In addition to the X server forwarding, add arguments to forward the
 /dev/video device and to establish priviledged operation: `--privileged --device /dev/video0`.
 
 ```bash
-docker run -it --rm --privileged --device /dev/video0 -v /tmp/.X11-unix:/tmp/.X11-unix -v $(pwd):/home/jovyan/local -e DISPLAY opencv-notebooks
+docker run -it --rm --privileged --device /dev/video0 -v /tmp/.X11-unix:/tmp/.X11-unix -v $(pwd):/home/jovyan/local -e DISPLAY brillozon/opencv-notebooks
 ```
 
 #### Granting the user `sudo` access

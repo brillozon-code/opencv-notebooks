@@ -79,6 +79,8 @@ RUN ln -s \
      /usr/local/lib/python3.6/site-packages/cv2.cpython-36m-x86_64-linux-gnu.so \
      /opt/conda/lib/python3.6/site-packages/
 
+RUN conda install theano tensorflow
+
 RUN chown -R jovyan.users /home/jovyan/opencv /home/jovyan/opencv_contrib
 
 COPY simple-opencv-window.ipynb \
