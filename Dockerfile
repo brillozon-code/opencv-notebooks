@@ -79,13 +79,16 @@ RUN ln -s \
      /usr/local/lib/python3.6/site-packages/cv2.cpython-36m-x86_64-linux-gnu.so \
      /opt/conda/lib/python3.6/site-packages/
 
-RUN conda install theano tensorflow
+RUN conda install -y theano tensorflow
 
 RUN chown -R jovyan.users /home/jovyan/opencv /home/jovyan/opencv_contrib
 
 COPY simple-opencv-window.ipynb \
      image-colors-display.ipynb \
-     channel-mixing-technicolor.ipynb /home/jovyan/notebooks/
+     channel-mixing-technicolor.ipynb \
+     curves-bending-colorspace.ipynb \
+     edged.ipynb \
+     convoluted.ipynb /home/jovyan/notebooks/
 
 RUN \
      chown -R jovyan.users /home/jovyan/notebooks \
@@ -96,5 +99,8 @@ USER jovyan
 RUN \
     jupyter trust /home/jovyan/notebooks/simple-opencv-window.ipynb \
  && jupyter trust /home/jovyan/notebooks/image-colors-display.ipynb \
- && jupyter trust /home/jovyan/notebooks/channel-mixing-technicolor.ipynb
+ && jupyter trust /home/jovyan/notebooks/channel-mixing-technicolor.ipynb \
+ && jupyter trust /home/jovyan/notebooks/curves-bending-colorspace.ipynb \
+ && jupyter trust /home/jovyan/notebooks/edged.ipynb \
+ && jupyter trust /home/jovyan/notebooks/convoluted.ipynb
 
